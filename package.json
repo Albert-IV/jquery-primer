@@ -1,0 +1,19 @@
+{
+  "name": "jquery-primer",
+  "version": "1.0.0",
+  "description": "Simple server for jQuery example",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/droppedonjapan/jquery-primer.git"
+  },
+  "author": "Albert Engelbrecht <dropped.on.japan@gmail.com> (twitter.com/droppedonjapan)",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "dependancy": {
+    "express": "3.1.0"
+  }
+}
