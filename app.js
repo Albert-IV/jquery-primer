@@ -1,18 +1,20 @@
-var lactate = require('lactate');
-var express = require('express'); 
-
-var app = express();
-var port = 3000
-
-app.all(function(req, res, next) {
-	console.log( req.url );
-	next();
+var app = require('express')(); 
+var lactate = require('lactate').Lactate({
+  //cache:false,
+  //max_age:'one day'
 })
 
-app.use( lactate.static('/public') );
+var port = 3000
+
+// app.all(function(req, res, next) {
+	// console.log( req.url );
+	// next();
+// })
+
+// app.use( lactate.static(__dirname  + '/public') );
 
 app.get('/', function(req, res, next) {
-	res.end('<h1>jQuery Primer Server</h1>')
+	lactate.serve(__dirname + 'index.html')
 })
 
 app.get('/example1', function(req, res){
