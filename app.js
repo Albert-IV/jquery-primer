@@ -1,26 +1,40 @@
-var app = require('express')(); 
-var lactate = require('lactate').Lactate({
-  //cache:false,
-  //max_age:'one day'
-})
+var express = require('express')
+  , app = module.exports = express()
+  , mongo = require('./mongo-db.js');
 
-var port = 3000
+app.use(express.favicon());
+app.use(express.bodyParser());
+app.use(express.static(__dirname + '/public'))
 
-// app.all(function(req, res, next) {
-	// console.log( req.url );
-	// next();
-// })
+app.get('/get-users', function(req, res, next) {
+  mongo.findAll(function (e, users) {
+  	if (e) return res.json( { error: e } );
 
-// app.use( lactate.static(__dirname  + '/public') );
+  	if (!users.length) {
+  		console.log('no users!');
+  	}
 
-app.get('/', function(req, res, next) {
-	lactate.serve(__dirname + 'index.html')
-})
-
-app.get('/example1', function(req, res){
-  res.send('Hello World');
+  	res.json( { users: users } )
+  })
 });
 
-app.listen(port, function() {
-	console.log('Server is listening on port ' + port)
+app.post('/remove-user', function(req, res, next) {
+
+})
+
+app.post('/add-user', function(req, res, next) {
+	mongo.addUser(req.body, function(e) {
+		if (e) return res.json( {error: e } );
+
+		res.json( { response: 'success' } );
+	})
 });
+
+app.post('/rename-user', function(req, res, next) {
+
+})
+
+if (!module.parent){
+  app.listen(3000);
+  console.log('Express started on port 3000');
+}
