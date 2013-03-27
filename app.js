@@ -2,7 +2,7 @@ var express = require('express')
   , app = module.exports = express()
   , mongo = require('./mongo-db.js');
 
-app.use(express.favicon());
+app.use(express.favicon(__dirname + '/favicon.ico'));
 app.use(express.bodyParser());
 app.use(express.static(__dirname + '/public'))
 
@@ -19,14 +19,20 @@ app.get('/get-users', function(req, res, next) {
 });
 
 app.post('/remove-user', function(req, res, next) {
+  if (!req.body.id) return res.json({error: 'Missing Parameters!'});
 
+  mongo.removeUser(req.body.id, function(e, success) {
+    if (e) return res.json({error: e});
+
+    res.json( {response: 'success'} );
+  });
 })
 
 app.post('/add-user', function(req, res, next) {
-	mongo.addUser(req.body, function(e) {
+	mongo.addUser(req.body, function(e, user) {
 		if (e) return res.json( {error: e } );
 
-		res.json( { response: 'success' } );
+		res.json( { response: user } );
 	})
 });
 
