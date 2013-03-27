@@ -26,9 +26,18 @@ db.once('open', function() {
 	mongo.addUser = function(user, cb) {
 		var newUser = new User(user);
 
-		newUser.save(function(e) {
-			cb(e);
+		newUser.save(function(e, nUser) {
+			cb(e, nUser);
 		});
+	}
+
+	mongo.removeUser = function(id, cb) {
+		User.findOne({_id: id}, function(e, usr) {
+			if (e) return cb(e);
+
+			usr.remove();
+			cb();
+		})
 	}
 	
 })
